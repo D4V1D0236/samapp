@@ -2,6 +2,25 @@
 
 La siguientes es una lista de las funcionalidades disponibles para el usuario de la aplicación:
 
-1. ...
-2. ...
-...
+1. Registro, autenticación y gestión de usuarios: Los usuarios podrán crear una cuenta, iniciar y cerrar sesión, recuperar su contraseña y modificar sus datos personales. En esta se manejaran tres roles que corresponden a: adoptante, refugio u hogar de paso y administrador. Cada uno de estos tiene permisos y funcionalidades específicas.
+2. Verificación de refugios y hogares de paso: Las organizaciones o personas que publiquen animales podrán registrar información sobre estos como datos de contacto, ubicación y documentos de identificación. El administrador podrá verificar estos perfiles antes de publicar anunciones o vistas de animales en el refugio en búsqueda de un nuevo hogar, aumentando la confianza y seguridad dentro de la plataforma.
+3. Galería de animales en adopción: Se mostrará un catálogo con fotografías e información detallada de cada animal, incluyendo nombre, especie, raza, edad aproximada, sexo, tamaño, estado de salud, vacunas, esterilización, personalidad, necesidades especiales, ubicación e historia del rescate.
+4. Buscador y filtros avanzados: El usuario podrá encontrar animales aplicando filtros por especie, edad, tamaño, sexo, raza, ubicación, estado de vacunación, esterilización o compatibilidad con niños y otros animales.
+5. Sistema de favoritos: Los adoptantes podrán guardar animales que les interesen para consultarlos posteriormente y comparar diferentes opciones antes de iniciar un proceso de adopción.
+6. Perfil detallado del animal: Cada mascota tendrá una página individual desde la cual se podrá consultar toda su información, conocer el refugio responsable y acceder directamente al formulario de solicitud de adopción.
+7. Formulario de solicitud de adopción: El interesado podrá enviar una solicitud indicando información relevante sobre su vivienda, estabilidad económica y laboral, experiencia con mascotas, disponibilidad, integrantes del hogar, condiciones en las que viviría el animal y compromiso de mantenerlo.
+8. Seguimiento del proceso de adopción: Cada solicitud tendrá estados como enviada, en revisión, entrevista pendiente, visita pendiente, aprobada, rechazada, cancelada o adopción completada.
+9. Sistema de compatibilidad para adopción: Con base en las preferencias y condiciones indicadas por el usuario, el sistema podrá recomendar mascotas potencialmente compatibles. Esta funcionalidad guarda relación con la finalidad planteada en el documento de conectar una mascota en adopción con el perfil que mejor se adapte.
+10. Chat entre adoptante y refugio: la plataforma contará con mensajería interna para resolver dudas sobre el animal, coordinar entrevistas, visitas y entrega de documentos.
+11. Notificaciones: Los usuarios recibirán avisos dentro de la plataforma y por correo electrónico cuando exista una actualización de su solicitud, un nuevo mensaje, una entrevista programada, una mascota recomendada o algún cambio importante en el proceso.
+12. Gestión de mascotas por refugios: Los refugios podrán registrar, editar y eliminar anuncios animales de la plataforma, actualizar su estado de salud y cambiar su disponibilidad entre estados como disponible, reservado, en proceso de adopción o adoptado. El documento ya establece que los refugios pueden registrar animales con información como nombre, edad, raza, salud y fotografías.
+13. Historial médico básico del animal: Podrá registrarse información sobre vacunas, desparasitación, esterilización, alergias, enfermedades conocidas, tratamientos y recomendaciones veterinarias.
+14. Carga y gestión de documentos: Los refugios podrán adjuntar certificados de vacunación, esterilización u otros documentos relevantes, mientras que los adoptantes podrán cargar documentación requerida durante el proceso de adopción.
+15. Historias felices: Los usuarios y refugios podrán consultar casos de animales que fueron rescatados y posteriormente adoptados.
+16. Ubicación de refugios: Se mostrará información de refugios asociados, incluyendo nombre, ubicación, medios de contacto y animales disponibles. Esta funcionalidad desarrolla la localización de refugios que ya aparece mencionada en el documento.
+17. Donaciones a refugios: Los usuarios podrán consultar campañas o necesidades publicadas por refugios, como alimento, medicamentos, elementos de limpieza o apoyo económico.
+18. Campañas y eventos de adopción: Los refugios podrán publicar jornadas de adopción, vacunación, esterilización, recolección de alimentos y otras actividades relacionadas con el bienestar animal.
+19. Calificación y comentarios sobre refugios: Después de finalizar un proceso, los adoptantes podrán valorar su experiencia con el refugio, permitiendo generar mayor transparencia y confianza dentro de la plataforma.
+20. Panel administrativo: Permitirá gestionar usuarios, refugios, animales, solicitudes, publicaciones educativas, productos, reportes y demás información de la plataforma a los usuarios designados con el rol de Administrador. El Administrador podrá aprobar o rechazar contenidos y supervisar la seguridad e integridad de los datos.
+21. Dashboard de estadísticas: el administrador y los refugios podrán visualizar indicadores como cantidad de animales publicados, mascotas adoptadas, solicitudes recibidas, solicitudes aprobadas, animales con mayor número de visitas, refugios activos y evolución de adopciones por periodo.
+22. Gestión de términos, consentimiento y privacidad: Durante el registro, el usuario deberá aceptar expresamente los términos y condiciones, y las políticas relacionadas con el tratamiento de sus datos personales.
