@@ -1,0 +1,54 @@
+{
+  "roles": {
+    "ADOPTANTE": {
+      "nombre": "Adoptante",
+      "descripcion": "Usuario que consulta mascotas y realiza solicitudes de adopción.",
+      "activo": true,
+      "permisos": [
+        "ver_mascotas",
+        "crear_solicitud_adopcion",
+        "ver_sus_solicitudes",
+        "gestionar_favoritos",
+        "enviar_mensajes"
+      ]
+    },
+    "REFUGIO": {
+      "nombre": "Refugio",
+      "descripcion": "Organización o persona verificada que gestiona publicaciones de animales.",
+      "activo": true,
+      "permisos": [
+        "gestionar_mascotas",
+        "gestionar_solicitudes",
+        "publicar_eventos",
+        "publicar_donaciones",
+        "ver_estadisticas_refugio",
+        "enviar_mensajes"
+      ]
+    },
+    "HOGAR_DE_PASO": {
+      "nombre": "Hogar de Paso",
+      "descripcion": "Usuario verificado que ofrece temporalmente un espacio de acogida.",
+      "activo": true,
+      "permisos": [
+        "gestionar_mascotas_asignadas",
+        "actualizar_seguimiento",
+        "enviar_mensajes"
+      ]
+    },
+    "ADMINISTRADOR": {
+      "nombre": "Administrador",
+      "descripcion": "Gestiona usuarios, roles, mascotas, solicitudes y contenido de la plataforma.",
+      "activo": true,
+      "permisos": [
+        "gestionar_usuarios",
+        "gestionar_roles",
+        "gestionar_refugios",
+        "gestionar_mascotas",
+        "gestionar_solicitudes",
+        "gestionar_contenido",
+        "ver_estadisticas",
+        "supervisar_reportes"
+      ]
+    }
+  }
+}

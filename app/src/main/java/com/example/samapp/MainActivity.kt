@@ -1,6 +1,7 @@
 package com.example.samapp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,14 +20,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.seconds
-
-// Importaciones de las otras pantallas
+import com.example.samapp.firebase.FirebaseRepository
 import com.example.samapp.formulario.FormularioApp
+import com.example.samapp.inicio.InicioScreen
 import com.example.samapp.recuperacion.RecuperacionApp
 import com.example.samapp.verificacion.VerificacionScreen
-import com.example.samapp.inicio.InicioScreen
+import com.example.samapp.model.RegistroState
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
+import android.content.res.Configuration
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.platform.LocalConfiguration
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +43,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
 val CyanBackground = Color(0xFF6DE2FA)
@@ -44,32 +52,92 @@ val TextDark = Color(0xFF1B263B)
 
 @Composable
 fun AppNavigation() {
-    var currentScreen by remember { mutableStateOf("splash") }
+    var currentScreen by rememberSaveable { mutableStateOf("splash") }
+    var correoPendiente by rememberSaveable { mutableStateOf("") }
+    var rolActual by rememberSaveable { mutableStateOf("ADOPTANTE") }
+    val repository = remember { FirebaseRepository() }
+    val context = LocalContext.current
+    val showMessage: (String) -> Unit = { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
+    var loginError by rememberSaveable { mutableStateOf<String?>(null) }
 
+    // Solo avanza a login si seguimos en el splash (no pisa la pantalla actual al rotar)
     LaunchedEffect(Unit) {
-        delay(3.seconds)
-        currentScreen = "login"
+        if (currentScreen == "splash") {
+            delay(3.seconds)
+            if (currentScreen == "splash") currentScreen = "login"
+        }
     }
 
     when (currentScreen) {
         "splash" -> SplashScreen()
+
         "login" -> LoginScreen(
-            onNavigateToRegister = { currentScreen = "formulario" },
-            onNavigateToRecovery = { currentScreen = "com/example/samapp/recuperacion" },
-            onNavigateToInicio = { currentScreen = "inicio" }
+            errorMessage = loginError,
+            onEditing = { loginError = null },
+            onNavigateToRegister = { loginError = null; currentScreen = "formulario" },
+            onNavigateToRecovery = { loginError = null; currentScreen = "recuperacion" },
+            onLogin = { usuario, contrasena ->
+                loginError = null
+                repository.iniciarSesion(
+                    email = usuario,
+                    password = contrasena,
+                    onSuccess = { rol ->
+                        rolActual = rol
+                        loginError = null
+                        currentScreen = "inicio"
+                    },
+                    onError = { loginError = it }
+                )
+            }
         )
+
         "formulario" -> FormularioApp(
             onCancelForm = { currentScreen = "login" },
-            onFinishForm = { currentScreen = "verificacion" }
+            onFinishForm = { registro: RegistroState ->
+                correoPendiente = registro.correo
+                repository.registrarUsuario(
+                    registro = registro,
+                    onSuccess = {
+                        currentScreen = "verificacion"
+                        showMessage("Cuenta creada. Revisa tu correo para verificarla.")
+                    },
+                    onError = { showMessage(it) }
+                )
+            }
         )
-        "com/example/samapp/recuperacion" -> RecuperacionApp(
+
+        "recuperacion" -> RecuperacionApp(
             onBackToLogin = { currentScreen = "login" }
         )
+
         "verificacion" -> VerificacionScreen(
-            onBack = { currentScreen = "formulario" },
-            onVerificar = { currentScreen = "login" }
+            correo = correoPendiente,
+            onBack = {
+                repository.cerrarSesion()
+                currentScreen = "login"
+            },
+            onReenviar = {
+                repository.reenviarVerificacion(
+                    onSuccess = { showMessage("Correo de verificación reenviado.") },
+                    onError = { showMessage(it) }
+                )
+            },
+            onVerificar = {
+                repository.comprobarVerificacion(
+                    onVerified = {
+                        repository.cerrarSesion()
+                        showMessage("Correo verificado. Ya puedes iniciar sesión.")
+                        currentScreen = "login"
+                    },
+                    onNotVerified = {
+                        showMessage("Todavía no aparece la verificación. Abre el enlace recibido y vuelve a comprobar.")
+                    },
+                    onError = { showMessage(it) }
+                )
+            }
         )
-        "inicio" -> InicioScreen()
+
+        "inicio" -> InicioScreen(rol = rolActual)
     }
 }
 
@@ -92,12 +160,15 @@ fun SplashScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
+    errorMessage: String?,
+    onEditing: () -> Unit,
     onNavigateToRegister: () -> Unit,
     onNavigateToRecovery: () -> Unit,
-    onNavigateToInicio: () -> Unit
+    onLogin: (String, String) -> Unit
 ) {
-    var usuario by remember { mutableStateOf("") }
-    var contrasena by remember { mutableStateOf("") }
+    var usuario by rememberSaveable { mutableStateOf("") }
+    var contrasena by rememberSaveable { mutableStateOf("") }
+    val horizontal = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Box(
         modifier = Modifier
@@ -115,13 +186,14 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 60.dp),
+                .verticalScroll(rememberScrollState())
+                .padding(top = if (horizontal) 16.dp else 60.dp, bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo_sam),
                 contentDescription = "Logo SAM",
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier.size(if (horizontal) 90.dp else 120.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -137,8 +209,9 @@ fun LoginScreen(
 
             Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                    .padding(horizontal = 32.dp)
+                    .widthIn(max = 480.dp)
+                    .fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = BlueCard)
             ) {
@@ -146,14 +219,14 @@ fun LoginScreen(
                     modifier = Modifier.padding(24.dp)
                 ) {
                     Text(
-                        text = "Usuario",
+                        text = "Correo electrónico",
                         color = TextDark,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     TextField(
                         value = usuario,
-                        onValueChange = { usuario = it },
+                        onValueChange = { usuario = it; onEditing() },
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(Color.White),
@@ -176,7 +249,7 @@ fun LoginScreen(
                     )
                     TextField(
                         value = contrasena,
-                        onValueChange = { contrasena = it },
+                        onValueChange = { contrasena = it; onEditing() },
                         visualTransformation = PasswordVisualTransformation(),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -192,6 +265,20 @@ fun LoginScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    errorMessage?.let { msg ->
+                        Text(
+                            text = msg,
+                            color = Color(0xFFB00020),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 13.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 16.dp)
+                                .background(Color.White, RoundedCornerShape(8.dp))
+                                .padding(10.dp)
+                        )
+                    }
+
                     Text(
                         text = "¿Olvidaste tu contraseña?",
                         color = TextDark,
@@ -206,7 +293,7 @@ fun LoginScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Button(
-                            onClick = onNavigateToInicio,
+                            onClick = { onLogin(usuario, contrasena) },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                             shape = RoundedCornerShape(20.dp)
                         ) {

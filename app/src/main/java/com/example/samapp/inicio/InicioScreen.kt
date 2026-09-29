@@ -33,7 +33,7 @@ val ButtonBlue = Color(0xFF6CA0DC)
 val TextGray = Color(0xFF9E9E9E)
 
 @Composable
-fun InicioScreen() {
+fun InicioScreen(rol: String = "ADOPTANTE") {
     Scaffold(
         topBar = { TopBarSAM() },
         bottomBar = { BottomBarSAM() },
@@ -57,6 +57,21 @@ fun InicioScreen() {
                 color = TextGray,
                 letterSpacing = 2.sp
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = ButtonBlue.copy(alpha = 0.12f)
+            ) {
+                Text(
+                    text = "ROL: ${rol.replace("_", " ")}",
+                    color = TopBarBlue,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 

@@ -1,7 +1,5 @@
 package com.example.samapp.verificacion
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -14,129 +12,86 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 
-val ButtonBlue = Color(0xFF6CA0DC)
-val BorderGray = Color(0xFF9E9E9E)
+val VerificationButtonBlue = Color(0xFF6CA0DC)
 
 @Composable
 fun VerificacionScreen(
+    correo: String,
     onBack: () -> Unit,
-    onVerificar: () -> Unit // <-- Parámetro agregado
+    onVerificar: () -> Unit,
+    onReenviar: () -> Unit
 ) {
-    // La declaración de la variable con sus importaciones de runtime.* activas
-    var codigo by remember { mutableStateOf("") }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(40.dp))
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        containerColor = Color.White
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Text(
+            text = "REVISA LA BANDEJA DE TU CORREO",
+            fontFamily = FontFamily.Monospace,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
+
+        Text(
+            text = "Te enviamos un enlace de verificación a:\n$correo\n\nAbre el enlace en tu correo y después vuelve a la app para comprobar tu cuenta.",
+            fontFamily = FontFamily.Monospace,
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 40.dp)
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
-
-            Text(
-                text = "REVISA LA BANDEJA DE TU\nCORREO",
-                fontFamily = FontFamily.Monospace,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = Color.Black,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
-
-            Text(
-                text = "Te hemos enviado un código de verificación\nal correo electrónico registrado para\nactivar tu cuenta",
-                fontFamily = FontFamily.Monospace,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
-                color = Color.Black,
-                modifier = Modifier.padding(bottom = 40.dp)
-            )
-
-            // Campo de texto central
-            Box(
+            Button(
+                onClick = onReenviar,
+                colors = ButtonDefaults.buttonColors(containerColor = VerificationButtonBlue),
+                shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
-                    .fillMaxWidth(0.8f)
+                    .weight(1f)
                     .height(48.dp)
-                    .border(1.dp, BorderGray)
-                    .background(Color.White)
             ) {
-                TextField(
-                    value = codigo,
-                    onValueChange = { codigo = it },
-                    modifier = Modifier.fillMaxSize(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
-                    singleLine = true
-                )
+                Text("REENVIAR CORREO", fontWeight = FontWeight.Bold, fontSize = 11.sp)
             }
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+            Button(
+                onClick = onVerificar,
+                colors = ButtonDefaults.buttonColors(containerColor = VerificationButtonBlue),
+                shape = RoundedCornerShape(20.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp)
             ) {
-                Button(
-                    onClick = { /* Acción reenviar código */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue),
-                    shape = RoundedCornerShape(20.dp),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp)
-                ) {
-                    Text(
-                        text = "REENVIAR CODIGO",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 11.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Button(
-                    onClick = onVerificar, // <-- AQUÍ USAMOS EL PARÁMETRO PARA ELIMINAR LA ADVERTENCIA
-                    colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue),
-                    shape = RoundedCornerShape(20.dp),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp)
-                ) {
-                    Text(
-                        text = "VERIFICAR",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp
-                    )
-                }
+                Text("COMPROBAR", fontWeight = FontWeight.Bold, fontSize = 12.sp)
             }
+        }
 
-            Spacer(modifier = Modifier.weight(1f)) // Empuja el botón Atrás hacia el fondo
+        Spacer(modifier = Modifier.weight(1f))
 
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.BottomStart
-            ) {
-                Button(
-                    onClick = onBack,
-                    colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue),
-                    shape = RoundedCornerShape(20.dp),
-                    modifier = Modifier
-                        .width(150.dp)
-                        .height(48.dp)
-                ) {
-                    Text(text = "ATRAS", fontWeight = FontWeight.Bold)
-                }
-            }
+        Button(
+            onClick = onBack,
+            colors = ButtonDefaults.buttonColors(containerColor = VerificationButtonBlue),
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+        ) {
+            Text("ATRAS", fontWeight = FontWeight.Bold)
         }
     }
 }
