@@ -33,6 +33,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalConfiguration
+import com.example.samapp.historias.HistoriasScreen
+
+// 1. IMPORTANTE: Agregamos la importación de la pantalla de Detalles
+import com.example.samapp.historias.DetalleMascotaScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +47,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
 }
 
 val CyanBackground = Color(0xFF6DE2FA)
@@ -55,12 +58,15 @@ fun AppNavigation() {
     var currentScreen by rememberSaveable { mutableStateOf("splash") }
     var correoPendiente by rememberSaveable { mutableStateOf("") }
     var rolActual by rememberSaveable { mutableStateOf("ADOPTANTE") }
+
+    // 2. IMPORTANTE: Variable para recordar qué mascota seleccionó el usuario
+    var mascotaSeleccionada by rememberSaveable { mutableStateOf("") }
+
     val repository = remember { FirebaseRepository() }
     val context = LocalContext.current
     val showMessage: (String) -> Unit = { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
     var loginError by rememberSaveable { mutableStateOf<String?>(null) }
 
-    // Solo avanza a login si seguimos en el splash (no pisa la pantalla actual al rotar)
     LaunchedEffect(Unit) {
         if (currentScreen == "splash") {
             delay(3.seconds)
@@ -137,7 +143,28 @@ fun AppNavigation() {
             }
         )
 
-        "inicio" -> InicioScreen(rol = rolActual)
+        "inicio" -> InicioScreen(
+            rol = rolActual,
+            onNavigateToInicio = { currentScreen = "inicio" },
+            onNavigateToHistorias = { currentScreen = "historias" }
+        )
+
+        "historias" -> HistoriasScreen(
+            onNavigateToInicio = { currentScreen = "inicio" },
+            onNavigateToHistorias = { currentScreen = "historias" },
+            // 3. IMPORTANTE: Recibimos el nombre y navegamos a detalles
+            onNavigateToDetalle = { nombre ->
+                mascotaSeleccionada = nombre
+                currentScreen = "detalle"
+            }
+        )
+
+        // 4. IMPORTANTE: La nueva ruta que muestra la pantalla de Detalles
+        "detalle" -> DetalleMascotaScreen(
+            nombreMascota = mascotaSeleccionada,
+            onNavigateToInicio = { currentScreen = "inicio" },
+            onNavigateToHistorias = { currentScreen = "historias" }
+        )
     }
 }
 
