@@ -1,17 +1,15 @@
 package com.example.samapp.inicio
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable // <-- Esta importación soluciona el primer error
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -33,10 +31,19 @@ val ButtonBlue = Color(0xFF6CA0DC)
 val TextGray = Color(0xFF9E9E9E)
 
 @Composable
-fun InicioScreen(rol: String = "ADOPTANTE") {
+fun InicioScreen(
+    rol: String = "ADOPTANTE",
+    onNavigateToInicio: () -> Unit = {},
+    onNavigateToHistorias: () -> Unit = {}
+) {
     Scaffold(
         topBar = { TopBarSAM() },
-        bottomBar = { BottomBarSAM() },
+        bottomBar = {
+            BottomBarSAM(
+                onNavigateToInicio = onNavigateToInicio,
+                onNavigateToHistorias = onNavigateToHistorias
+            )
+        },
         floatingActionButton = { ChatBurbuja() },
         containerColor = Color.White
     ) { paddingValues ->
@@ -208,7 +215,10 @@ fun AdoptionCard(imageRes: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BottomBarSAM() {
+fun BottomBarSAM(
+    onNavigateToInicio: () -> Unit = {},
+    onNavigateToHistorias: () -> Unit = {}
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -220,9 +230,24 @@ fun BottomBarSAM() {
     ) {
         Icon(Icons.Default.Notifications, contentDescription = "Notificaciones", tint = Color.White, modifier = Modifier.size(32.dp))
         Icon(Icons.Default.DateRange, contentDescription = "Eventos", tint = Color.White, modifier = Modifier.size(32.dp))
-        Icon(Icons.Default.Home, contentDescription = "Inicio", tint = Color.White, modifier = Modifier.size(40.dp))
-        Icon(Icons.Default.Edit, contentDescription = "Formulario", tint = Color.White, modifier = Modifier.size(32.dp))
-        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Salir", tint = Color.White, modifier = Modifier.size(32.dp))
+
+        // Botón Inicio (Casa)
+        Icon(
+            Icons.Default.Home,
+            contentDescription = "Inicio",
+            tint = Color.White,
+            modifier = Modifier.size(40.dp).clickable { onNavigateToInicio() }
+        )
+
+        // Botón Historias (Lápiz y Papel)
+        Icon(
+            Icons.Default.Edit,
+            contentDescription = "Formulario",
+            tint = Color.White,
+            modifier = Modifier.size(32.dp).clickable { onNavigateToHistorias() }
+        )
+
+        Icon(Icons.Default.ExitToApp, contentDescription = "Salir", tint = Color.White, modifier = Modifier.size(32.dp))
     }
 }
 
@@ -233,7 +258,7 @@ fun ChatBurbuja() {
         modifier = Modifier.padding(bottom = 16.dp)
     ) {
         Icon(
-            imageVector = Icons.AutoMirrored.Filled.Message,
+            imageVector = Icons.Default.Email,
             contentDescription = "Chat",
             tint = TopBarBlue,
             modifier = Modifier.size(56.dp)
