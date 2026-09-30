@@ -18,3 +18,8 @@ p1.0.1
 ## Firebase
 
 La aplicación usa Firebase Authentication para las cuentas con correo/contraseña y Cloud Firestore para almacenar el perfil del usuario.
+
+## Cuenta Personal para el profesor
+
+wilson.forero@uan.edu.co
+samapp4120*
