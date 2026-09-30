@@ -50,19 +50,15 @@ La aplicación tendrá la siguientes pantallas
 
 ![screen1](images/image_12.jpg)
 
-13. Pantalla 13: Interfaz Historias
-
-![screen1](images/image_13.jpg)
-
-14. Pantalla 14: Interfaz Chats
+13. Pantalla 14: Interfaz Chats
 
 ![screen1](images/image_14.jpg)
 
-15. Pantalla 15: Interfaz Notificaciones
+14. Pantalla 15: Interfaz Notificaciones
 
 ![screen1](images/image_15.jpg)
 
-16. Pantalla 16: Interfaz Cerrar Sesión
+15. Pantalla 16: Interfaz Cerrar Sesión
 
 ![screen1](images/image_16.jpg)
 
