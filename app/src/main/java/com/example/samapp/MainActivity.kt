@@ -34,6 +34,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalConfiguration
 import com.example.samapp.historias.HistoriasScreen
+import com.example.samapp.chats.ChatsScreen
+import com.example.samapp.eventos.EventosScreen
+import com.example.samapp.navigation.NavActions
+import com.example.samapp.notificaciones.NotificacionesScreen
+import com.example.samapp.sesion.CerrarSesionScreen
 
 // 1. IMPORTANTE: Agregamos la importación de la pantalla de Detalles
 import com.example.samapp.historias.DetalleMascotaScreen
@@ -61,11 +66,23 @@ fun AppNavigation() {
 
     // 2. IMPORTANTE: Variable para recordar qué mascota seleccionó el usuario
     var mascotaSeleccionada by rememberSaveable { mutableStateOf("") }
+    var pantallaAntesDeSalir by rememberSaveable { mutableStateOf("inicio") }
 
     val repository = remember { FirebaseRepository() }
     val context = LocalContext.current
     val showMessage: (String) -> Unit = { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
     var loginError by rememberSaveable { mutableStateOf<String?>(null) }
+    val nav = NavActions(
+        inicio = { currentScreen = "inicio" },
+        adopciones = { currentScreen = "historias" },
+        eventos = { currentScreen = "eventos" },
+        notificaciones = { currentScreen = "notificaciones" },
+        chats = { currentScreen = "chats" },
+        salir = {
+            if (currentScreen != "salir") pantallaAntesDeSalir = currentScreen
+            currentScreen = "salir"
+        }
+    )
 
     LaunchedEffect(Unit) {
         if (currentScreen == "splash") {
@@ -145,25 +162,38 @@ fun AppNavigation() {
 
         "inicio" -> InicioScreen(
             rol = rolActual,
-            onNavigateToInicio = { currentScreen = "inicio" },
-            onNavigateToHistorias = { currentScreen = "historias" }
+            nav = nav
         )
 
         "historias" -> HistoriasScreen(
-            onNavigateToInicio = { currentScreen = "inicio" },
-            onNavigateToHistorias = { currentScreen = "historias" },
-            // 3. IMPORTANTE: Recibimos el nombre y navegamos a detalles
+            nav = nav,
             onNavigateToDetalle = { nombre ->
                 mascotaSeleccionada = nombre
                 currentScreen = "detalle"
             }
         )
 
-        // 4. IMPORTANTE: La nueva ruta que muestra la pantalla de Detalles
         "detalle" -> DetalleMascotaScreen(
             nombreMascota = mascotaSeleccionada,
-            onNavigateToInicio = { currentScreen = "inicio" },
-            onNavigateToHistorias = { currentScreen = "historias" }
+            nav = nav
+        )
+
+        "eventos" -> EventosScreen(nav = nav)
+
+        "notificaciones" -> NotificacionesScreen(nav = nav)
+
+        "chats" -> ChatsScreen(nav = nav)
+
+        "salir" -> CerrarSesionScreen(
+            onCerrarSesion = {
+                repository.cerrarSesion()
+                rolActual = "ADOPTANTE"
+                mascotaSeleccionada = ""
+                pantallaAntesDeSalir = "inicio"
+                loginError = null
+                currentScreen = "login"
+            },
+            onContinuar = { currentScreen = pantallaAntesDeSalir }
         )
     }
 }

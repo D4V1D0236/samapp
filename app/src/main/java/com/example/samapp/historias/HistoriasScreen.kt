@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.samapp.R
+import com.example.samapp.navigation.NavActions
+
 
 // Importamos los componentes que ya creaste en inicio
 import com.example.samapp.inicio.TopBarSAM
@@ -29,19 +31,13 @@ import com.example.samapp.inicio.ButtonBlue
 
 @Composable
 fun HistoriasScreen(
-    onNavigateToInicio: () -> Unit,
-    onNavigateToHistorias: () -> Unit,
-    onNavigateToDetalle: (String) -> Unit // <-- 1. Añadimos el canal de comunicación
+    nav: NavActions,
+    onNavigateToDetalle: (String) -> Unit
 ) {
     Scaffold(
         topBar = { TopBarSAM() },
-        bottomBar = {
-            BottomBarSAM(
-                onNavigateToInicio = onNavigateToInicio,
-                onNavigateToHistorias = onNavigateToHistorias
-            )
-        },
-        floatingActionButton = { ChatBurbuja() },
+        bottomBar = { BottomBarSAM(nav) },
+        floatingActionButton = { ChatBurbuja(onClick = nav.chats) },
         containerColor = Color.White
     ) { paddingValues ->
         Column(

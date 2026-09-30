@@ -81,7 +81,7 @@ fun VerificacionScreen(
             }
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Button(
             onClick = onBack,

@@ -20,6 +20,8 @@ import com.example.samapp.R
 import com.example.samapp.inicio.TopBarSAM
 import com.example.samapp.inicio.BottomBarSAM
 import com.example.samapp.inicio.ChatBurbuja
+import com.example.samapp.navigation.NavActions
+
 
 // Estructura para guardar los datos de cada animal
 data class MascotaInfo(val imageRes: Int, val sexo: String, val edad: String, val peso: String, val raza: String, val salud: String, val vacunas: String)
@@ -27,8 +29,7 @@ data class MascotaInfo(val imageRes: Int, val sexo: String, val edad: String, va
 @Composable
 fun DetalleMascotaScreen(
     nombreMascota: String,
-    onNavigateToInicio: () -> Unit,
-    onNavigateToHistorias: () -> Unit
+    nav: NavActions
 ) {
     // Aquí asignamos los datos exactos que pediste para cada animal
     val info = when (nombreMascota) {
@@ -42,13 +43,8 @@ fun DetalleMascotaScreen(
 
     Scaffold(
         topBar = { TopBarSAM() },
-        bottomBar = {
-            BottomBarSAM(
-                onNavigateToInicio = onNavigateToInicio,
-                onNavigateToHistorias = onNavigateToHistorias
-            )
-        },
-        floatingActionButton = { ChatBurbuja() },
+        bottomBar = { BottomBarSAM(nav) },
+        floatingActionButton = { ChatBurbuja(onClick = nav.chats) },
         containerColor = Color.White
     ) { paddingValues ->
         Column(

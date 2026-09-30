@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.samapp.R
+import com.example.samapp.navigation.NavActions
 
 val TopBarBlue = Color(0xFF759FCB)
 val ButtonBlue = Color(0xFF6CA0DC)
@@ -33,18 +34,12 @@ val TextGray = Color(0xFF9E9E9E)
 @Composable
 fun InicioScreen(
     rol: String = "ADOPTANTE",
-    onNavigateToInicio: () -> Unit = {},
-    onNavigateToHistorias: () -> Unit = {}
+    nav: NavActions = NavActions()
 ) {
     Scaffold(
         topBar = { TopBarSAM() },
-        bottomBar = {
-            BottomBarSAM(
-                onNavigateToInicio = onNavigateToInicio,
-                onNavigateToHistorias = onNavigateToHistorias
-            )
-        },
-        floatingActionButton = { ChatBurbuja() },
+        bottomBar = { BottomBarSAM(nav) },
+        floatingActionButton = { ChatBurbuja(onClick = nav.chats) },
         containerColor = Color.White
     ) { paddingValues ->
         Column(
@@ -215,10 +210,7 @@ fun AdoptionCard(imageRes: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BottomBarSAM(
-    onNavigateToInicio: () -> Unit = {},
-    onNavigateToHistorias: () -> Unit = {}
-) {
+fun BottomBarSAM(nav: NavActions = NavActions()) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -228,34 +220,47 @@ fun BottomBarSAM(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(Icons.Default.Notifications, contentDescription = "Notificaciones", tint = Color.White, modifier = Modifier.size(32.dp))
-        Icon(Icons.Default.DateRange, contentDescription = "Eventos", tint = Color.White, modifier = Modifier.size(32.dp))
-
-        // Botón Inicio (Casa)
+        Icon(
+            Icons.Default.Notifications,
+            contentDescription = "Notificaciones",
+            tint = Color.White,
+            modifier = Modifier.size(32.dp).clickable { nav.notificaciones() }
+        )
+        Icon(
+            Icons.Default.DateRange,
+            contentDescription = "Eventos",
+            tint = Color.White,
+            modifier = Modifier.size(32.dp).clickable { nav.eventos() }
+        )
         Icon(
             Icons.Default.Home,
             contentDescription = "Inicio",
             tint = Color.White,
-            modifier = Modifier.size(40.dp).clickable { onNavigateToInicio() }
+            modifier = Modifier.size(40.dp).clickable { nav.inicio() }
         )
-
-        // Botón Historias (Lápiz y Papel)
         Icon(
             Icons.Default.Edit,
-            contentDescription = "Formulario",
+            contentDescription = "Adopciones",
             tint = Color.White,
-            modifier = Modifier.size(32.dp).clickable { onNavigateToHistorias() }
+            modifier = Modifier.size(32.dp).clickable { nav.adopciones() }
         )
-
-        Icon(Icons.Default.ExitToApp, contentDescription = "Salir", tint = Color.White, modifier = Modifier.size(32.dp))
+        Icon(
+            Icons.Default.ExitToApp,
+            contentDescription = "Salir",
+            tint = Color.White,
+            modifier = Modifier.size(32.dp).clickable { nav.salir() }
+        )
     }
 }
 
 @Composable
-fun ChatBurbuja() {
+fun ChatBurbuja(onClick: () -> Unit = {}) {
     Box(
         contentAlignment = Alignment.TopEnd,
-        modifier = Modifier.padding(bottom = 16.dp)
+        modifier = Modifier
+            .padding(bottom = 16.dp)
+            .clip(CircleShape)
+            .clickable { onClick() }
     ) {
         Icon(
             imageVector = Icons.Default.Email,
@@ -263,7 +268,6 @@ fun ChatBurbuja() {
             tint = TopBarBlue,
             modifier = Modifier.size(56.dp)
         )
-        // Punto rojo de notificación
         Box(
             modifier = Modifier
                 .size(16.dp)
