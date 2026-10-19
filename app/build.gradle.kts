@@ -68,7 +68,7 @@ dependencies {
 
     // Firebase
     implementation(
-        platform("com.google.firebase:firebase-bom:34.19.0")
+        platform("com.google.firebase:firebase-bom:35.0.2")
     )
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
