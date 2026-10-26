@@ -1,5 +1,10 @@
 package com.example.samapp.model
 
+/**
+ * Datos del registro de usuario (pantalla única).
+ * Los datos de vivienda, mascotas y responsabilidad se piden después,
+ * en la pantalla de adopción.
+ */
 data class RegistroState(
     val nombreCompleto: String = "",
     val tipoDocumento: String = "",
@@ -9,25 +14,5 @@ data class RegistroState(
     val ciudad: String = "",
     val direccion: String = "",
     val contrasena: String = "",
-    val confirmarContrasena: String = "",
-    val tipoVivienda: String = "",
-    val personasEnCasa: String = "",
-    val hayNinos: String = "",
-    val tieneMascotas: String = "",
-    val tieneZonaVerde: String = "",
-    val edadesNinos: String = "",
-    val cantidadMascotas: String = "",
-    val tipoMascotas: String = "",
-    val mascotasVacunadasEsterilizadas: String = "",
-    val motivoAdopcion: String = "",
-    val planesMudanzaViaje: String = "",
-    val responsableCuidado: String = "",
-    val participacion: String = ""
-) {
-    val rolSolicitado: String
-        get() = when (participacion) {
-            "Hogar de Paso" -> "HOGAR_DE_PASO"
-            "Ambas" -> "HOGAR_DE_PASO"
-            else -> "ADOPTANTE"
-        }
-}
+    val confirmarContrasena: String = ""
+)
