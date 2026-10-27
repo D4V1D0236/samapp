@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.samapp.R
 import com.example.samapp.inicio.BottomBarSAM
-import com.example.samapp.inicio.ChatBurbuja
 import com.example.samapp.inicio.TopBarSAM
 import com.example.samapp.navigation.NavActions
 
@@ -46,7 +45,6 @@ fun EventosScreen(
     Scaffold(
         topBar = { TopBarSAM() },
         bottomBar = { BottomBarSAM(nav) },
-        floatingActionButton = { ChatBurbuja(onClick = nav.chats) },
         containerColor = Color.White
     ) { paddingValues ->
         Column(

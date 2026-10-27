@@ -3,7 +3,7 @@ package com.example.samapp.inicio
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable // <-- Esta importación soluciona el primer error
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -37,9 +37,8 @@ fun InicioScreen(
     nav: NavActions = NavActions()
 ) {
     Scaffold(
-        topBar = { TopBarSAM() },
+        topBar = { TopBarSAM(nav) }, // Aquí pasamos el nav a la barra superior
         bottomBar = { BottomBarSAM(nav) },
-        floatingActionButton = { ChatBurbuja(onClick = nav.chats) },
         containerColor = Color.White
     ) { paddingValues ->
         Column(
@@ -98,7 +97,6 @@ fun InicioScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Cuadrícula de mascotas
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -124,56 +122,43 @@ fun InicioScreen(
     }
 }
 
+// Aquí actualizamos la función para recibir el nav
 @Composable
-fun TopBarSAM() {
-    Row(
+fun TopBarSAM(nav: NavActions? = null) {
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(TopBarBlue)
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .statusBarsPadding(),
-        verticalAlignment = Alignment.CenterVertically
+        contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo_sam),
-            contentDescription = "Logo SAM",
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(Color.White)
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo_sam),
+                contentDescription = "Logo SAM",
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(Color.White)
+            )
+            Icon(Icons.Default.Info, contentDescription = "Info", tint = Color.White)
+        }
 
         Button(
-            onClick = { /* Acción donar */ },
+            // Aquí le asignamos la acción para ir a donaciones (pantalla de notificaciones)
+            onClick = { nav?.notificaciones() },
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
             shape = RoundedCornerShape(16.dp),
-            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
+            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 0.dp),
             modifier = Modifier.height(32.dp)
         ) {
             Text("DONA AQUI", color = Color.Black, fontSize = 10.sp, fontWeight = FontWeight.Bold)
         }
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        // Barra de búsqueda simulada
-        Row(
-            modifier = Modifier
-                .weight(1f)
-                .height(32.dp)
-                .background(ButtonBlue, RoundedCornerShape(16.dp))
-                .padding(horizontal = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text("Buscar...", color = Color.White, fontSize = 12.sp)
-            Icon(Icons.Default.Search, contentDescription = "Buscar", tint = Color.White, modifier = Modifier.size(16.dp))
-        }
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Icon(Icons.Default.Info, contentDescription = "Info", tint = Color.White)
     }
 }
 
@@ -222,7 +207,7 @@ fun BottomBarSAM(nav: NavActions = NavActions()) {
     ) {
         Icon(
             Icons.Default.Notifications,
-            contentDescription = "Notificaciones",
+            contentDescription = "Notificaciones", // Ahora nos lleva a Donaciones
             tint = Color.White,
             modifier = Modifier.size(32.dp).clickable { nav.notificaciones() }
         )
@@ -249,30 +234,6 @@ fun BottomBarSAM(nav: NavActions = NavActions()) {
             contentDescription = "Salir",
             tint = Color.White,
             modifier = Modifier.size(32.dp).clickable { nav.salir() }
-        )
-    }
-}
-
-@Composable
-fun ChatBurbuja(onClick: () -> Unit = {}) {
-    Box(
-        contentAlignment = Alignment.TopEnd,
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-            .clip(CircleShape)
-            .clickable { onClick() }
-    ) {
-        Icon(
-            imageVector = Icons.Default.Email,
-            contentDescription = "Chat",
-            tint = TopBarBlue,
-            modifier = Modifier.size(56.dp)
-        )
-        Box(
-            modifier = Modifier
-                .size(16.dp)
-                .background(Color.Red, CircleShape)
-                .border(2.dp, Color.White, CircleShape)
         )
     }
 }
