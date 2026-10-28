@@ -1,6 +1,6 @@
 # Diseño de interfaz de usuario
 
-La aplicación tendrá la siguientes pantallas
+La aplicación tendrá las siguientes pantallas
 
 1. Pantalla 1: Pantalla de Inicio
 
