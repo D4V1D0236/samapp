@@ -118,8 +118,8 @@ fun InfoScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 listOf(
                     "Conocer a los perros y gatos disponibles para adopción.",
-                    "Enterarte de jornadas de esterilización y vacunación.",
-                    "Recibir notificaciones de nuevas mascotas y eventos.",
+                    "Enterarte de jornadas de esterilización, vacunación y mucho más.",
+                    "Conocer las últimas adopciones que han cambiado la vida de un peludito.",
                     "Escribir a los rescatistas y apoyar con tu donación."
                 ).forEach { item ->
                     Row(modifier = Modifier.padding(vertical = 3.dp)) {

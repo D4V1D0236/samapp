@@ -35,7 +35,6 @@ import com.example.samapp.navigation.NavActions
 private val eventosFlyers = listOf(
     R.drawable.evento_1,
     R.drawable.evento_2,
-    R.drawable.evento_3,
     R.drawable.evento_4,
     R.drawable.evento_5,
     R.drawable.evento_6

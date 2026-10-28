@@ -213,7 +213,7 @@ fun BottomBarSAM(nav: NavActions = NavActions()) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            Icons.Default.Notifications,
+            Icons.Default.FavoriteBorder,
             contentDescription = "Notificaciones", // Ahora nos lleva a Donaciones
             tint = Color.White,
             modifier = Modifier.size(32.dp).clickable { nav.notificaciones() }
