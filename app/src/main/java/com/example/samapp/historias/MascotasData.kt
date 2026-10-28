@@ -53,7 +53,7 @@ val MASCOTAS = listOf(
     // ---------------- PERROS ----------------
     Mascota("Negrita",      TipoMascota.PERRO, "animal11", "Hembra",  "7 meses",   "8 Kg", "Mestizo", "Excelente",  "Al día"),
     Mascota("Tony",    TipoMascota.PERRO, "animal12", "Macho",  "1 año",    "7 Kg", "Mestizo", "Excelente",  "Al día"),
-    Mascota("Bruno",    TipoMascota.PERRO, "animal13", "Macho",  "2 años",   "22 Kg", "Mestizo", "Buena",      "Al día"),
+    Mascota("Bruno",    TipoMascota.PERRO, "animal13", "Macho",  "2 años",   "10 Kg", "Mestizo", "Buena",      "Al día"),
     Mascota("Niña",   TipoMascota.PERRO, "animal14", "Hembra", "1 año",  "9 Kg",  "Mestizo", "Excelente",  "En proceso"),
     Mascota("Toby",     TipoMascota.PERRO, "animal15", "Macho",  "4 meses",  "5 Kg",  "Huskee", "Excelente",  "En proceso"),
     Mascota("Nala",     TipoMascota.PERRO, "animal16", "Hembra", "2 años",   "8 Kg", "Mestizo", "Excelente",  "Al día")
