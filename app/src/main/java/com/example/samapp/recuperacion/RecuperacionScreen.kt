@@ -133,7 +133,7 @@ fun RecuperacionTextField(label: String, value: String, onValueChange: (String) 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp),
+            .padding(bottom = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -146,7 +146,7 @@ fun RecuperacionTextField(label: String, value: String, onValueChange: (String) 
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .height(40.dp)
+                .height(60.dp)
                 .border(1.dp, RecoveryBorderGray)
                 .background(Color.White)
         ) {

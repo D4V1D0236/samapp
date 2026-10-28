@@ -77,7 +77,7 @@ fun InicioScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Ingresa al menú de ADOPTA AQUÍ en las tres\nlíneas para encontrar a tu amigo ideal de\ncuatro patas \uD83D\uDC36\uD83D\uDC31",
+                text = "Para interactuar con la aplicación, utiliza el menú de navegación de la parte inferior y esperamos que encuentres a tu mejor amigo. \uD83D\uDC36\uD83D\uDC31",
                 fontFamily = FontFamily.Monospace,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
