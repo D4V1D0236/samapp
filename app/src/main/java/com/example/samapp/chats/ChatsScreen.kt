@@ -47,7 +47,7 @@ fun ChatsScreen(
     onAbrirChat: (ChatResumen) -> Unit = {}
 ) {
     Scaffold(
-        topBar = { TopBarSAM() },
+        topBar = { TopBarSAM(nav) },
         bottomBar = { BottomBarSAM(nav) },
         containerColor = Color.White
     ) { paddingValues ->

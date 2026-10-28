@@ -2,7 +2,6 @@ package com.example.samapp.historias
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,21 +11,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.samapp.R
 import com.example.samapp.inicio.TopBarSAM
 import com.example.samapp.inicio.BottomBarSAM
 import com.example.samapp.navigation.NavActions
 import com.example.samapp.inicio.ButtonBlue
-
-data class MascotaInfo(val imageRes: Int, val sexo: String, val edad: String, val peso: String, val raza: String, val salud: String, val vacunas: String)
 
 @Composable
 fun DetalleMascotaScreen(
@@ -38,16 +32,11 @@ fun DetalleMascotaScreen(
     // Recuerda cambiar esto por tu número real
     val numeroWhatsApp = "573216944941"
 
-    val info = when (nombreMascota) {
-        "Tigre" -> MascotaInfo(R.drawable.animal5, "Macho", "3 años", "5 Kg", "Criollo", "Excelente", "Al día")
-        "Oreo" -> MascotaInfo(R.drawable.animal6, "Hembra", "1 año", "2.5 Kg", "Criollo", "Excelente", "Al día")
-        "Mishi" -> MascotaInfo(R.drawable.animal7, "Hembra", "2 meses", "2 Kg", "Criollo", "Excelente", "Al día")
-        "Garfield" -> MascotaInfo(R.drawable.animal8, "Macho", "3 meses", "3 Kg", "Criollo", "Excelente!", "Al día")
-        else -> MascotaInfo(R.drawable.animal8, "Macho", "3 meses", "3 Kg", "Criollo", "Excelente!", "Al día")
-    }
+    // Los datos salen de MASCOTAS (MascotasData.kt)
+    val mascota = MASCOTAS.find { it.nombre == nombreMascota } ?: MASCOTAS.first()
 
     Scaffold(
-        topBar = { TopBarSAM() },
+        topBar = { TopBarSAM(nav) },
         bottomBar = { BottomBarSAM(nav) },
         containerColor = Color.White
     ) { paddingValues ->
@@ -84,10 +73,9 @@ fun DetalleMascotaScreen(
                     .aspectRatio(0.8f),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                Image(
-                    painter = painterResource(id = info.imageRes),
-                    contentDescription = nombreMascota,
-                    contentScale = ContentScale.Crop,
+                MascotaFoto(
+                    imagen = mascota.imagen,
+                    descripcion = mascota.nombre,
                     modifier = Modifier.fillMaxSize()
                 )
 
@@ -112,7 +100,7 @@ fun DetalleMascotaScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = nombreMascota,
+                text = mascota.nombre,
                 fontFamily = FontFamily.Monospace,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
@@ -122,7 +110,7 @@ fun DetalleMascotaScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Sexo: ${info.sexo}\nEdad: ${info.edad}\nPeso: ${info.peso}\nRaza: ${info.raza}\nEstado de Salud: ${info.salud}\nVacunas: ${info.vacunas}",
+                text = "Sexo: ${mascota.sexo}\nEdad: ${mascota.edad}\nPeso: ${mascota.peso}\nRaza: ${mascota.raza}\nEstado de Salud: ${mascota.salud}\nVacunas: ${mascota.vacunas}",
                 fontFamily = FontFamily.Monospace,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center,

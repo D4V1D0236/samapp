@@ -34,7 +34,11 @@ import com.example.samapp.navigation.NavActions
 
 private val eventosFlyers = listOf(
     R.drawable.evento_1,
-    R.drawable.evento_2
+    R.drawable.evento_2,
+    R.drawable.evento_3,
+    R.drawable.evento_4,
+    R.drawable.evento_5,
+    R.drawable.evento_6
 )
 
 @Composable
@@ -43,7 +47,7 @@ fun EventosScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = { TopBarSAM() },
+        topBar = { TopBarSAM(nav) },
         bottomBar = { BottomBarSAM(nav) },
         containerColor = Color.White
     ) { paddingValues ->

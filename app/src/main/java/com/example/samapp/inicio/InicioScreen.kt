@@ -146,7 +146,14 @@ fun TopBarSAM(nav: NavActions? = null) {
                     .clip(CircleShape)
                     .background(Color.White)
             )
-            Icon(Icons.Default.Info, contentDescription = "Info", tint = Color.White)
+            Icon(
+                Icons.Default.Info,
+                contentDescription = "Información",
+                tint = Color.White,
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable { nav?.info() }
+            )
         }
 
         Button(

@@ -6,5 +6,6 @@ data class NavActions(
     val eventos: () -> Unit = {},
     val notificaciones: () -> Unit = {},
     val chats: () -> Unit = {},
-    val salir: () -> Unit = {}
+    val salir: () -> Unit = {},
+    val info: () -> Unit = {}
 )

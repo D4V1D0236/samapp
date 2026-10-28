@@ -34,6 +34,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalConfiguration
 import com.example.samapp.historias.HistoriasScreen
+import com.example.samapp.historias.TipoMascota
+import com.example.samapp.info.InfoScreen
 import com.example.samapp.chats.ChatsScreen
 import com.example.samapp.eventos.EventosScreen
 import com.example.samapp.navigation.NavActions
@@ -68,6 +70,12 @@ fun AppNavigation() {
     var mascotaSeleccionada by rememberSaveable { mutableStateOf("") }
     var pantallaAntesDeSalir by rememberSaveable { mutableStateOf("inicio") }
 
+    // Pantalla desde la que se abrió "Información", para volver ahí con "Regresar"
+    var pantallaAntesDeInfo by rememberSaveable { mutableStateOf("inicio") }
+
+    // Filtro de la pantalla de adopciones (se guarda aquí para que no se pierda al abrir un detalle)
+    var filtroMascotas by rememberSaveable { mutableStateOf(TipoMascota.GATO) }
+
     val repository = remember { FirebaseRepository() }
     val context = LocalContext.current
     val showMessage: (String) -> Unit = { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
@@ -81,6 +89,10 @@ fun AppNavigation() {
         salir = {
             if (currentScreen != "salir") pantallaAntesDeSalir = currentScreen
             currentScreen = "salir"
+        },
+        info = {
+            if (currentScreen != "info") pantallaAntesDeInfo = currentScreen
+            currentScreen = "info"
         }
     )
 
@@ -167,6 +179,8 @@ fun AppNavigation() {
 
         "historias" -> HistoriasScreen(
             nav = nav,
+            tipoSeleccionado = filtroMascotas,
+            onTipoChange = { filtroMascotas = it },
             onNavigateToDetalle = { nombre ->
                 mascotaSeleccionada = nombre
                 currentScreen = "detalle"
@@ -179,6 +193,11 @@ fun AppNavigation() {
         )
 
         "eventos" -> EventosScreen(nav = nav)
+
+        "info" -> InfoScreen(
+            nav = nav,
+            onRegresar = { currentScreen = pantallaAntesDeInfo }
+        )
 
         "notificaciones" -> NotificacionesScreen(nav = nav)
 
