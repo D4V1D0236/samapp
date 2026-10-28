@@ -81,7 +81,7 @@ fun DetalleMascotaScreen(
 
                 Button(
                     onClick = {
-                        val mensaje = "Hola, vengo de SAM APP y estoy interesado en adoptar a \${mascota.nombre} (\${mascota.tipo.name.lowercase()})."
+                        val mensaje = "Hola, vengo de SAM APP y estoy interesado en adoptar a ${mascota.nombre}."
                         val url = "https://wa.me/$numeroWhatsApp?text=${Uri.encode(mensaje)}"
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         context.startActivity(intent)
