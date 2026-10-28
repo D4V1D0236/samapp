@@ -188,7 +188,7 @@ fun AppNavigation() {
         )
 
         "detalle" -> DetalleMascotaScreen(
-            nombreMascota = mascotaSeleccionada,
+            mascotaId = mascotaSeleccionada,
             nav = nav
         )
 

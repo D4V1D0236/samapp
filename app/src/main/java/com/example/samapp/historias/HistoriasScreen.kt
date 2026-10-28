@@ -79,7 +79,7 @@ fun HistoriasScreen(
                         PetCard(
                             mascota = mascota,
                             modifier = Modifier.weight(1f)
-                        ) { onNavigateToDetalle(mascota.nombre) }
+                        ) { onNavigateToDetalle(mascota.id) }
                     }
                     if (fila.size == 1) Spacer(modifier = Modifier.weight(1f))
                 }

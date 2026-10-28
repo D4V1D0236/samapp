@@ -24,7 +24,7 @@ import com.example.samapp.inicio.ButtonBlue
 
 @Composable
 fun DetalleMascotaScreen(
-    nombreMascota: String,
+    mascotaId: String,
     nav: NavActions
 ) {
     val context = LocalContext.current
@@ -33,7 +33,7 @@ fun DetalleMascotaScreen(
     val numeroWhatsApp = "573216944941"
 
     // Los datos salen de MASCOTAS (MascotasData.kt)
-    val mascota = MASCOTAS.find { it.nombre == nombreMascota } ?: MASCOTAS.first()
+    val mascota = MASCOTAS.find { it.id == mascotaId } ?: MASCOTAS.first()
 
     Scaffold(
         topBar = { TopBarSAM(nav) },
@@ -81,7 +81,7 @@ fun DetalleMascotaScreen(
 
                 Button(
                     onClick = {
-                        val mensaje = "Hola, vengo de SAM APP y estoy interesado en adoptar a $nombreMascota."
+                        val mensaje = "Hola, vengo de SAM APP y estoy interesado en adoptar a \${mascota.nombre} (\${mascota.tipo.name.lowercase()})."
                         val url = "https://wa.me/$numeroWhatsApp?text=${Uri.encode(mensaje)}"
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         context.startActivity(intent)

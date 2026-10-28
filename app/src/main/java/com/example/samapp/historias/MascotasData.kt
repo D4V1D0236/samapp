@@ -35,7 +35,9 @@ data class Mascota(
     val raza: String,
     val salud: String,
     val vacunas: String
-)
+) {
+    val id: String get() = "${tipo.name.lowercase()}_${nombre.lowercase()}"
+}
 
 // =====================================================================
 //  LISTA DE MASCOTAS EN ADOPCIÓN
