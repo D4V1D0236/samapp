@@ -5,12 +5,12 @@ Las siguientes es una lista de las funcionalidades disponibles para el usuario d
 1. Registro, autenticación y gestión de usuarios: Los usuarios podrán crear una cuenta, iniciar sesión, cerrar sesión y recuperar su contraseña. En esta se manejará el rol de adoptante.
 2. Galería de animales en adopción: Se mostrará un catálogo con fotografías e información básica (nombre y edad) de cada animal.
 3. Buscador y filtros por especie: El usuario podrá encontrar animales aplicando filtros por especie en este caso gatos o perros.
-4. Perfil detallado del animal: Cada mascota tendrá una página individual desde la cual se podrá consultar su información detallada de cada uno incluyendo nombre, especie, raza, edad aproximada, sexo, tamaño, estado de salud, vacunas, esterilización, personalidad, necesidades especiales, ubicación e historia del rescate.
-5. Historial médico básico del animal: Podrá registrarse información sobre vacunas, desparasitación, esterilización, alergias, enfermedades conocidas, tratamientos y recomendaciones veterinarias.
-6. Carga y gestión de documentos: Los administradores podrán adjuntar certificados de vacunación, esterilización u otros documentos relevantes, mientras que los adoptantes podrán cargar documentación requerida durante el proceso de adopción. Se admiten archivos PDF, JPG y PNG de hasta 700 KB (las fotos se reducen automáticamente).
-7. Historias felices: Los usuarios podrán consultar casos de animales que fueron rescatados y posteriormente adoptados, con su nombre, especie, fecha de adopción y una breve historia.
-8. Donaciones a SAM APP: Los usuarios podrán consultar campañas o necesidades publicadas por los administradores, mediante algún apoyo económico. Cada campaña muestra su descripción, su meta y el valor recaudado; además se indican la llave Bre-B y el código QR para donar.
-9. Campañas y eventos de adopción: Los administradores publicarán jornadas de adopción, vacunación, esterilización, recolección de alimentos y otras actividades relacionadas con el bienestar animal.
+4. Perfil detallado del animal: Cada mascota tendrá una página individual desde la cual se podrá consultar su información detallada de cada uno incluyendo nombre, especie, raza, edad aproximada, sexo, tamaño, estado de salud, vacunas, esterilización, personalidad, necesidades especiales, ubicación e historia del rescate. Además, hay un botón `ADOPTAR`, el cuál redigirará al adoptante al número de WhatsApp asignado para la gestión de su adopción.
+5. Historial médico básico del animal: El adoptante podrá consultar información sobre personalidad, vacunas, desparasitación, esterilización, alergias, enfermedades conocidas, tratamientos y recomendaciones veterinarias.
+6. Carga y gestión de documentos: Los adoptantes podrán adjuntar o subir la documentación personal relevante para la adopción de una mascota.
+7. Historias felices: Los usuarios podrán consultar en la interfaz de inicio casos de animales que fueron rescatados y posteriormente adoptados, con su nombre, especie, fecha de adopción y una breve historia.
+8. Donaciones a SAM APP: Los usuarios podrán apoyar económicamente a SAM APP y a sus refugios mediante un código QR y una llave de Bre-B autorizada. Además, se publicarán esporadicamente campañas o necesidades publicadas.
+9. Campañas y eventos de adopción: SAM APP publicará jornadas de adopción, vacunación, esterilización, recolección de alimentos y otras actividades relacionadas con el bienestar de los animales.
 10. Gestión de términos, consentimiento y privacidad: Durante el registro, el usuario deberá aceptar expresamente los términos y condiciones, y las políticas relacionadas con el tratamiento de sus datos personales. El texto debe leerse hasta el final antes de poder marcar la casilla de aceptación.
 
 ## Aspectos y restricciones técnicas
@@ -24,7 +24,7 @@ Las siguientes es una lista de las funcionalidades disponibles para el usuario d
 
 ### Conectividad
 
-- Registro, inicio de sesión, verificación de correo, recuperación de contraseña, campañas de donación y documentos requieren conexión a internet.
+- Registro, inicio de sesión, verificación de correo, recuperación de contraseña y documentos requieren conexión a internet.
 - Las pantallas con contenido incluido en la propia aplicación (mascotas, historias felices, eventos, información y términos y condiciones) se muestran sin consultar el servidor.
 - La aplicación no conserva la sesión: cada vez que se abre se debe iniciar sesión de nuevo.
 
@@ -56,7 +56,7 @@ Las siguientes es una lista de las funcionalidades disponibles para el usuario d
 - Los administradores sí gestionan dentro de la aplicación las campañas de donación (publicar, actualizar el valor recaudado y eliminar) y los documentos de las mascotas.
 - Aún no existe un panel administrativo ni una pantalla para gestionar usuarios o roles.
 - El filtro del catálogo es solo por especie. Los roles de refugio y hogar de paso están definidos en la base de datos, pero todavía no tienen funcionalidades propias.
-- Los datos de vivienda, mascotas y responsabilidad se pedirán en el formulario de adopción, que aún no está implementado; ya no hacen parte del registro.
+- Los datos de vivienda, mascotas y responsabilidad se pedirán en el formulario de adopción que se realiza mediante el número de WhatsApp autorizado, y que aún no está implementado para que se gestione y cargue dentro de la aplicación; el cual ya no hacen parte del registro.
 
 ### Notificaciones y mensajería
 
