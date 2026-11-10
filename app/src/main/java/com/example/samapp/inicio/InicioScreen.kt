@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.samapp.R
+import com.example.samapp.historias.MascotaFoto
 import com.example.samapp.navigation.NavActions
 
 val TopBarBlue = Color(0xFF759FCB)
@@ -36,8 +38,10 @@ fun InicioScreen(
     rol: String = "ADOPTANTE",
     nav: NavActions = NavActions()
 ) {
+    var historiaAbierta by remember { mutableStateOf<HistoriaFeliz?>(null) }
+
     Scaffold(
-        topBar = { TopBarSAM(nav) }, // Aquí pasamos el nav a la barra superior
+        topBar = { TopBarSAM(nav) },
         bottomBar = { BottomBarSAM(nav) },
         containerColor = Color.White
     ) { paddingValues ->
@@ -85,44 +89,73 @@ fun InicioScreen(
                 modifier = Modifier.padding(horizontal = 24.dp)
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Acceso a la carga de documentos del adoptante
+            Button(
+                onClick = nav.documentos,
+                colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue),
+                shape = RoundedCornerShape(20.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 0.dp),
+                modifier = Modifier.height(40.dp)
+            ) {
+                Icon(Icons.Default.Description, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("MIS DOCUMENTOS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "ÚLTIMAS ADOPCIONES",
+                text = "HISTORIAS FELICES",
                 fontFamily = FontFamily.Monospace,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
+            Text(
+                text = "Últimas adopciones. Toca una para conocer su historia.",
+                fontFamily = FontFamily.Monospace,
+                fontSize = 12.sp,
+                color = TextGray,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
+            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             Column(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier
+                    .widthIn(max = 600.dp)
+                    .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    AdoptionCard(imageRes = R.drawable.animal1, modifier = Modifier.weight(1f))
-                    AdoptionCard(imageRes = R.drawable.animal2, modifier = Modifier.weight(1f))
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    AdoptionCard(imageRes = R.drawable.animal3, modifier = Modifier.weight(1f))
-                    AdoptionCard(imageRes = R.drawable.animal4, modifier = Modifier.weight(1f))
+                HISTORIAS_FELICES.chunked(2).forEach { fila ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        fila.forEach { historia ->
+                            HistoriaFelizCard(
+                                historia = historia,
+                                modifier = Modifier.weight(1f),
+                                onClick = { historiaAbierta = historia }
+                            )
+                        }
+                        if (fila.size == 1) Spacer(modifier = Modifier.weight(1f))
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
+
+    historiaAbierta?.let { historia ->
+        HistoriaFelizDialog(historia = historia, onClose = { historiaAbierta = null })
+    }
 }
 
-// Aquí actualizamos la función para recibir el nav
 @Composable
 fun TopBarSAM(nav: NavActions? = null) {
     Box(
@@ -157,8 +190,7 @@ fun TopBarSAM(nav: NavActions? = null) {
         }
 
         Button(
-            // Aquí le asignamos la acción para ir a donaciones (pantalla de notificaciones)
-            onClick = { nav?.notificaciones() },
+            onClick = { nav?.donaciones() },
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
             shape = RoundedCornerShape(16.dp),
             contentPadding = PaddingValues(horizontal = 24.dp, vertical = 0.dp),
@@ -170,37 +202,111 @@ fun TopBarSAM(nav: NavActions? = null) {
 }
 
 @Composable
-fun AdoptionCard(imageRes: Int, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .aspectRatio(1f)
-            .clip(RoundedCornerShape(8.dp)),
-        contentAlignment = Alignment.BottomCenter
+fun HistoriaFelizCard(
+    historia: HistoriaFeliz,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = modifier.clickable(onClick = onClick),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = imageRes),
-            contentDescription = "Mascota Adoptada",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-
         Box(
             modifier = Modifier
-                .padding(bottom = 8.dp)
-                .background(Color.White, RoundedCornerShape(20.dp))
-                .border(2.dp, ButtonBlue, RoundedCornerShape(20.dp))
-                .padding(horizontal = 16.dp, vertical = 4.dp)
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .clip(RoundedCornerShape(8.dp)),
+            contentAlignment = Alignment.BottomCenter
         ) {
-            Text(
-                text = "ADOPTADO",
-                color = ButtonBlue,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
+            MascotaFoto(
+                imagen = historia.imagen,
+                descripcion = historia.nombre,
+                modifier = Modifier.fillMaxSize()
             )
+
+            Box(
+                modifier = Modifier
+                    .padding(bottom = 8.dp)
+                    .background(Color.White, RoundedCornerShape(20.dp))
+                    .border(2.dp, ButtonBlue, RoundedCornerShape(20.dp))
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
+            ) {
+                Text(
+                    text = "ADOPTADO",
+                    color = ButtonBlue,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+            }
         }
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        Text(
+            text = "${historia.nombre} · ${historia.especie}",
+            fontFamily = FontFamily.Monospace,
+            fontWeight = FontWeight.Bold,
+            fontSize = 13.sp,
+            color = Color.Black
+        )
+        Text(
+            text = historia.fecha,
+            fontFamily = FontFamily.Monospace,
+            fontSize = 11.sp,
+            color = TextGray
+        )
+        Text(
+            text = "Ver historia",
+            fontFamily = FontFamily.Monospace,
+            fontWeight = FontWeight.Bold,
+            fontSize = 11.sp,
+            color = ButtonBlue
+        )
     }
 }
 
+@Composable
+private fun HistoriaFelizDialog(historia: HistoriaFeliz, onClose: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onClose,
+        confirmButton = { TextButton(onClick = onClose) { Text("CERRAR") } },
+        title = {
+            Text(
+                text = "${historia.nombre} · ${historia.especie}",
+                fontFamily = FontFamily.Monospace,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                MascotaFoto(
+                    imagen = historia.imagen,
+                    descripcion = historia.nombre,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "Adopción: ${historia.fecha}",
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = historia.historia,
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 14.sp,
+                    lineHeight = 21.sp
+                )
+            }
+        }
+    )
+}
+
+/** Barra inferior: cada ícono lleva su nombre para que sea fácil de identificar. */
 @Composable
 fun BottomBarSAM(nav: NavActions = NavActions()) {
     Row(
@@ -208,39 +314,43 @@ fun BottomBarSAM(nav: NavActions = NavActions()) {
             .fillMaxWidth()
             .background(TopBarBlue)
             .navigationBarsPadding()
-            .padding(vertical = 12.dp),
+            .padding(vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        BarraItem(Icons.Default.FavoriteBorder, "Donar", Modifier.weight(1f)) { nav.donaciones() }
+        BarraItem(Icons.Default.DateRange, "Eventos", Modifier.weight(1f)) { nav.eventos() }
+        BarraItem(Icons.Default.Home, "Inicio", Modifier.weight(1f)) { nav.inicio() }
+        BarraItem(Icons.Default.Pets, "Adoptar", Modifier.weight(1f)) { nav.adopciones() }
+        BarraItem(Icons.AutoMirrored.Filled.ExitToApp, "Salir", Modifier.weight(1f)) { nav.salir() }
+    }
+}
+
+@Composable
+private fun BarraItem(
+    icono: ImageVector,
+    texto: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .padding(vertical = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Icon(
-            Icons.Default.FavoriteBorder,
-            contentDescription = "Notificaciones", // Ahora nos lleva a Donaciones
+            imageVector = icono,
+            contentDescription = texto,
             tint = Color.White,
-            modifier = Modifier.size(32.dp).clickable { nav.notificaciones() }
+            modifier = Modifier.size(28.dp)
         )
-        Icon(
-            Icons.Default.DateRange,
-            contentDescription = "Eventos",
-            tint = Color.White,
-            modifier = Modifier.size(32.dp).clickable { nav.eventos() }
-        )
-        Icon(
-            Icons.Default.Home,
-            contentDescription = "Inicio",
-            tint = Color.White,
-            modifier = Modifier.size(40.dp).clickable { nav.inicio() }
-        )
-        Icon(
-            Icons.Default.Edit,
-            contentDescription = "Adopciones",
-            tint = Color.White,
-            modifier = Modifier.size(32.dp).clickable { nav.adopciones() }
-        )
-        Icon(
-            Icons.Default.ExitToApp,
-            contentDescription = "Salir",
-            tint = Color.White,
-            modifier = Modifier.size(32.dp).clickable { nav.salir() }
+        Text(
+            text = texto,
+            color = Color.White,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1
         )
     }
 }

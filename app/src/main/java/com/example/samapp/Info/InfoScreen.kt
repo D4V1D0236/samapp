@@ -120,6 +120,7 @@ fun InfoScreen(
                     "Conocer a los perros y gatos disponibles para adopción.",
                     "Enterarte de jornadas de esterilización, vacunación y mucho más.",
                     "Conocer las últimas adopciones que han cambiado la vida de un peludito.",
+                    "Cargar tus documentos para el proceso de adopción.",
                     "Escribir a los rescatistas y apoyar con tu donación."
                 ).forEach { item ->
                     Row(modifier = Modifier.padding(vertical = 3.dp)) {

@@ -39,7 +39,8 @@ import com.example.samapp.info.InfoScreen
 import com.example.samapp.chats.ChatsScreen
 import com.example.samapp.eventos.EventosScreen
 import com.example.samapp.navigation.NavActions
-import com.example.samapp.notificaciones.NotificacionesScreen
+import com.example.samapp.donaciones.DonacionesScreen
+import com.example.samapp.documentos.MisDocumentosScreen
 import com.example.samapp.sesion.CerrarSesionScreen
 
 // 1. IMPORTANTE: Agregamos la importación de la pantalla de Detalles
@@ -84,7 +85,8 @@ fun AppNavigation() {
         inicio = { currentScreen = "inicio" },
         adopciones = { currentScreen = "historias" },
         eventos = { currentScreen = "eventos" },
-        notificaciones = { currentScreen = "notificaciones" },
+        donaciones = { currentScreen = "donaciones" },
+        documentos = { currentScreen = "documentos" },
         chats = { currentScreen = "chats" },
         salir = {
             if (currentScreen != "salir") pantallaAntesDeSalir = currentScreen
@@ -95,6 +97,9 @@ fun AppNavigation() {
             currentScreen = "info"
         }
     )
+
+    // El rol viene de Firestore al iniciar sesión; las reglas de Firestore también lo validan
+    val esAdmin = rolActual == "ADMINISTRADOR"
 
     LaunchedEffect(Unit) {
         if (currentScreen == "splash") {
@@ -189,7 +194,8 @@ fun AppNavigation() {
 
         "detalle" -> DetalleMascotaScreen(
             mascotaId = mascotaSeleccionada,
-            nav = nav
+            nav = nav,
+            esAdmin = esAdmin
         )
 
         "eventos" -> EventosScreen(nav = nav)
@@ -199,7 +205,9 @@ fun AppNavigation() {
             onRegresar = { currentScreen = pantallaAntesDeInfo }
         )
 
-        "notificaciones" -> NotificacionesScreen(nav = nav)
+        "donaciones" -> DonacionesScreen(nav = nav, esAdmin = esAdmin)
+
+        "documentos" -> MisDocumentosScreen(nav = nav)
 
         "chats" -> ChatsScreen(nav = nav)
 

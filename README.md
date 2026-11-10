@@ -17,7 +17,7 @@ p1.0.1
 
 ## Firebase
 
-La aplicación usa Firebase Authentication para las cuentas con correo/contraseña y Cloud Firestore para almacenar el perfil del usuario.
+La aplicación usa Firebase Authentication para las cuentas con correo/contraseña y Cloud Firestore para almacenar el perfil del usuario, las campañas de donación y los documentos cargados.
 
 ## Cuenta Personal para el profesor
 

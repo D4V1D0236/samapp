@@ -58,6 +58,18 @@ La aplicación tendrá las siguientes pantallas
 
 ![screen1](images/image_14.jpg)
 
+# Cambios de la implementación respecto a los mockups
+
+Después de diseñar los mockups se hicieron los siguientes ajustes, y se agregaron pantallas que aún no tienen imagen:
+
+- **Barra inferior:** cada ícono lleva su nombre (Donar, Eventos, Inicio, Adoptar y Salir) para que sea fácil de identificar.
+- **Bienvenida:** la sección de adopciones pasó a llamarse "Historias felices". Cada tarjeta muestra el nombre, la especie y la fecha de adopción, y al tocarla se abre la historia completa. Se agregó el botón "Mis documentos".
+- **Adopciones:** se agregó el filtro por especie (Gatos / Perros).
+- **Información de la mascota:** se amplió con especie, tamaño, ubicación, esterilización, personalidad, necesidades especiales, historia del rescate, refugio responsable, historial médico y documentos.
+- **Donaciones:** además de la llave Bre-B y el QR, se listan las campañas publicadas por los administradores, con su meta y el valor recaudado. Los administradores ven los botones para publicar, actualizar y eliminar campañas.
+- **Registro de cuenta:** se muestra en una sola pantalla con desplegable para el tipo de documento (CC, CE, PA), calendario para la fecha de nacimiento y los términos y condiciones al final, que deben leerse hasta el final antes de aceptarlos.
+- **Mis documentos (pantalla nueva):** el adoptante sube, consulta y elimina sus documentos (identidad, comprobante de domicilio, carta de compromiso).
+
 # Referencias
 
 - [Material Design: Foundations](https://m3.material.io/foundations)
